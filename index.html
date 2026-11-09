@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Classroom | IoT Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">⌘</div>
+            <div>
+                <h2>SmartClass</h2>
+                <small>IoT MANAGEMENT</small>
+            </div>
+        </div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav>
+            <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                <span>▦</span> Dashboard
+            </a>
+            <a href="#environment" class="nav-link" data-section="environment">
+                <span>☀</span> Environment
+            </a>
+            <a href="#attendance" class="nav-link" data-section="attendance">
+                <span>♙</span> Attendance
+            </a>
+            <a href="#automation" class="nav-link" data-section="automation">
+                <span>⚡</span> Automation
+            </a>
+            <a href="#security" class="nav-link" data-section="security">
+                <span>♙</span> Access Control
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="connection">
+                <span class="live-dot"></span>
+                <div>
+                    <strong>IoT Gateway</strong>
+                    <small>System online</small>
+                </div>
+            </div>
+            <p class="muted">Smart Classroom v1.0</p>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">CLASSROOM MANAGEMENT</p>
+                <h1 id="pageTitle">Dashboard Overview</h1>
+                <p class="muted" id="currentDate"></p>
+            </div>
+
+            <div class="top-actions">
+                <span class="status-pill">
+                    <span class="live-dot"></span> System Online
+                </span>
+                <div class="avatar">A</div>
+            </div>
+        </header>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="page-section">
+
+            <div class="welcome-banner">
+                <div>
+                    <span class="tag">LIVE MONITORING</span>
+                    <h2>Welcome to your Smart Classroom 👋</h2>
+                    <p>Monitor classroom conditions and manage devices from one place.</p>
+                </div>
+                <div class="banner-icon">🏫</div>
+            </div>
+
+            <div class="section-heading">
+                <div>
+                    <h2>Classroom Overview</h2>
+                    <p class="muted">Real-time classroom statistics</p>
+                </div>
+                <span class="small-badge">● Demo Mode</span>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Temperature</span>
+                        <span class="stat-icon orange">🌡</span>
+                    </div>
+                    <h2 id="temperature">26.0°C</h2>
+                    <p class="muted">Room temperature</p>
+                    <div class="progress"><span style="width:65%"></span></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Air Quality</span>
+                        <span class="stat-icon green">☘</span>
+                    </div>
+                    <h2 id="airQuality">Good</h2>
+                    <p class="muted"><span id="aqi">AQI: 42</span></p>
+                    <div class="progress green-progress">
+                        <span style="width:82%"></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Attendance</span>
+                        <span class="stat-icon blue">♙</span>
+                    </div>
+                    <h2><span id="presentCount">32</span><small> / 40</small></h2>
+                    <p class="muted">Students present</p>
+                    <div class="progress blue-progress">
+                        <span id="attendanceProgress" style="width:80%"></span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span>Energy Usage</span>
+                        <span class="stat-icon purple">⚡</span>
+                    </div>
+                    <h2><span id="energyValue">2.4</span><small> kW</small></h2>
+                    <p class="muted">Estimated power consumption</p>
+                    <div class="progress purple-progress">
+                        <span id="energyProgress" style="width:48%"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid">
+
+                <div class="panel chart-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Environmental Monitoring</h3>
+                            <p class="muted">Temperature readings over time</p>
+                        </div>
+                        <span class="small-badge">Live Simulation</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="environmentChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Device Control</h3>
+                            <p class="muted">Manage classroom equipment</p>
+                        </div>
+                    </div>
+
+                    <div class="device-row">
+                        <div class="device-icon">💡</div>
+                        <div class="device-info">
+                            <strong>Smart Lighting</strong>
+                            <small id="lightStatus">Lights are ON</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="lightToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="device-row">
+                        <div class="device-icon">❄️</div>
+                        <div class="device-info">
+                            <strong>Air Conditioning</strong>
+                            <small id="acStatus">Cooling is ON</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="acToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="device-row">
+                        <div class="device-icon">📽️</div>
+                        <div class="device-info">
+                            <strong>Projector</strong>
+                            <small id="projectorStatus">Projector is OFF</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="projectorToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+
+                    <div class="device-row">
+                        <div class="device-icon">🌀</div>
+                        <div class="device-info">
+                            <strong>Ventilation Fan</strong>
+                            <small id="fanStatus">Fan is ON</small>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="fanToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-grid lower-grid">
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>Attendance Summary</h3>
+                            <p class="muted">Today's classroom attendance</p>
+                        </div>
+                        <button class="text-button" data-go="attendance">
+                            View all →
+                        </button>
+                    </div>
+
+                    <div class="attendance-summary">
+                        <div class="attendance-circle">
+                            <div>
+                                <strong id="attendancePercent">80%</strong>
+                                <small>Present</small>
+                            </div>
+                        </div>
+                        <div class="attendance-legend">
+                            <p><span class="legend-dot green-dot"></span>
+                                Present <strong id="legendPresent">32</strong>
+                            </p>
+                            <p><span class="legend-dot red-dot"></span>
+                                Absent <strong id="legendAbsent">8</strong>
+                            </p>
+                            <p><span class="legend-dot blue-dot"></span>
+                                Total <strong>40</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h3>System Activity</h3>
+                            <p class="muted">Recent classroom events</p>
+                        </div>
+                    </div>
+                    <div id="activityList" class="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-symbol green">✓</span>
+                            <div>
+                                <strong>System initialized</strong>
+                                <small>IoT gateway connected</small>
+                            </div>
+                            <time>Now</time>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-symbol blue">♙</span>
+                            <div>
+                                <strong>Attendance loaded</strong>
+                                <small>32 students present</small>
+                            </div>
+                            <time>Today</time>
+                        </div>
+                        <div class="activity-item">
+                            <span class="activity-symbol orange">⚡</span>
+                            <div>
+                                <strong>Energy monitoring active</strong>
+                                <small>Power usage is being tracked</small>
+                            </div>
+                            <time>Today</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Environment -->
+        <section id="environment" class="page-section hidden">
+            <div class="section-heading">
+                <div>
+                    <h2>Environmental Monitoring</h2>
+                    <p class="muted">Monitor classroom conditions</p>
+                </div>
+                <button class="primary-button" id="refreshSensors">↻ Refresh Sensors</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="muted">Temperature</span>
+                    <h2 id="envTemperature">26.0°C</h2>
+                    <p class="muted">Temperature sensor</p>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Humidity</span>
+                    <h2 id="humidity">55%</h2>
+                    <p class="muted">Humidity sensor</p>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Air Quality</span>
+                    <h2 id="envAir">Good</h2>
+                    <p class="muted" id="envAqi">AQI: 42</p>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Light Level</span>
+                    <h2 id="lux">420 lux</h2>
+                    <p class="muted">Ambient light sensor</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <h3>Sensor Readings</h3>
+                    <span class="small-badge">Simulated Data</span>
+                </div>
+                <div class="chart-container large-chart">
+                    <canvas id="sensorChart"></canvas>
+                </div>
+                <p class="muted note">
+                    Sensor values are simulated for the project demonstration.
+                </p>
+            </div>
+        </section>
+
+        <!-- Attendance -->
+        <section id="attendance" class="page-section hidden">
+            <div class="section-heading">
+                <div>
+                    <h2>Attendance Management</h2>
+                    <p class="muted">Manage student attendance records</p>
+                </div>
+                <button class="primary-button" id="markAllPresent">
+                    ✓ Mark All Present
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="muted">Total Students</span>
+                    <h2>40</h2>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Present</span>
+                    <h2 id="attendancePresentCard">32</h2>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Absent</span>
+                    <h2 id="attendanceAbsentCard">8</h2>
+                </div>
+                <div class="stat-card">
+                    <span class="muted">Attendance Rate</span>
+                    <h2 id="attendanceRateCard">80%</h2>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h3>Student Register</h3>
+                        <p class="muted">Toggle attendance for each student</p>
+                    </div>
+                    <input type="search" id="studentSearch"
+                           placeholder="Search student...">
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll No.</th>
+                                <th>Student Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentTable"></tbody>
+                    </table>
+                </div>
+                <p class="muted note">
+                    Sample student records are used in this prototype.
+                </p>
+            </div>
+        </section>
+
+        <!-- Automation -->
+        <section id="automation" class="page-section hidden">
+            <div class="section-heading">
+                <div>
+                    <h2>Intelligent Automation</h2>
+                    <p class="muted">Configure automated classroom actions</p>
+                </div>
+            </div>
+
+            <div class="automation-grid">
+                <div class="panel">
+                    <div class="device-icon large-icon">💡</div>
+                    <h3>Smart Lighting</h3>
+                    <p class="muted">
+                        Automatically control lights based on occupancy
+                        and ambient brightness.
+                    </p>
+                    <div class="setting-row">
+                        <span>Enable automation</span>
+                        <label class="switch">
+                            <input type="checkbox" id="autoLight" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <label class="field-label">Brightness threshold</label>
+                    <input type="range" id="brightnessRange"
+                           min="100" max="800" value="400">
+                    <p class="muted">
+                        Threshold: <strong id="brightnessValue">400 lux</strong>
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <div class="device-icon large-icon">❄️</div>
+                    <h3>Climate Control</h3>
+                    <p class="muted">
+                        Activate cooling when classroom temperature
+                        exceeds the configured limit.
+                    </p>
+                    <div class="setting-row">
+                        <span>Enable automation</span>
+                        <label class="switch">
+                            <input type="checkbox" id="autoClimate" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <label class="field-label">Target temperature</label>
+                    <input type="range" id="targetTemperature"
+                           min="18" max="32" value="25">
+                    <p class="muted">
+                        Target: <strong id="targetValue">25°C</strong>
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <div class="device-icon large-icon">⚡</div>
+                    <h3>Energy Saving</h3>
+                    <p class="muted">
+                        Automatically switch off selected equipment
+                        when the classroom is unoccupied.
+                    </p>
+                    <div class="setting-row">
+                        <span>Enable energy saving</span>
+                        <label class="switch">
+                            <input type="checkbox" id="energySaving" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="info-box">
+                        <strong>Energy policy</strong>
+                        <p class="muted">
+                            Reduce unnecessary electricity consumption
+                            when the room is empty.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel automation-status">
+                <h3>Automation Status</h3>
+                <p id="automationMessage" class="muted">
+                    Smart automation is enabled.
+                </p>
+            </div>
+        </section>
+
+        <!-- Access Control -->
+        <section id="security" class="page-section hidden">
+            <div class="section-heading">
+                <div>
+                    <h2>Classroom Access Control</h2>
+                    <p class="muted">Manage simulated classroom entry</p>
+                </div>
+                <span class="small-badge">Demo Mode</span>
+            </div>
+
+            <div class="content-grid">
+                <div class="panel access-card">
+                    <div class="access-illustration">🔐</div>
+                    <h2>Classroom Door</h2>
+                    <p class="muted">Electronic access control</p>
+
+                    <div id="doorStatus" class="door-status locked">
+                        🔒 Door Locked
+                    </div>
+
+                    <button class="primary-button full-button"
+                            id="doorToggle">
+                        Unlock Door
+                    </button>
+
+                    <p class="muted note">
+                        This is a software simulation. No physical door
+                        or lock is connected.
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <h3>Access Log</h3>
+                    <p class="muted">Recent access events</p>
+                    <div id="accessLog" class="activity-list">
+                        <div class="activity-item">
+                            <span class="activity-symbol green">✓</span>
+                            <div>
+                                <strong>System ready</strong>
+                                <small>Access control initialized</small>
+                            </div>
+                            <time>Now</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <span>IoT-Based Smart Classroom Management System</span>
+            <span>Prototype • CGC Project</span>
+        </footer>
+
+    </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
